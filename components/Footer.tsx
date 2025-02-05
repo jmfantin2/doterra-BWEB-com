@@ -35,9 +35,14 @@ const Footer = () => {
               </strong>
             </Link>
 
-            <p className="mt-3 text-sm text-base-content/80">
-              A <strong>Presell Digital</strong> é o ecossistema que engloba os
-              serviços da <strong>brasaweb</strong>.
+            <p className="mt-3 text-sm text-base-content/80 md:text-left text-center flex flex-col gap-2">
+              <span>
+                A <strong>brasaweb</strong> entrega a você o estado da arte em
+                sistemas de internet.
+              </span>
+              <span>
+                Uma marca <strong>Presell Digital</strong>.
+              </span>
             </p>
             <p className="mt-3 text-sm text-base-content/60">
               Copyright © {new Date().getFullYear()}
