@@ -28,35 +28,66 @@ const oils: Record<string, Oil> = {
   },
 };
 
-// Mapeamento de quais óleos tratam quais sintomas
-const oilRecommendations: Record<string, string[]> = {
-  vertigem: ['ginger', 'zengest'],
-  enjoo: ['ginger', 'zengest'],
-  enjooDeViagem: ['ginger', 'zengest'],
-  insonia: ['fennel'],
-  cicatriz: ['ginger'],
+// Mapeamento de sintomas e seus nomes de exibição
+const symptomNames: Record<string, string> = {
+  vertigem: 'Vertigem',
+  enjoo: 'Enjôo',
+  enjooDeViagem: 'Enjôo de Viagem',
+  insonia: 'Insônia',
+  cicatriz: 'Cicatriz',
+};
+
+// Mapeamento de óleos recomendados (standard e star)
+const oilRecommendations: Record<
+  string,
+  { standard: string[]; star: string[] }
+> = {
+  vertigem: { standard: ['ginger', 'zengest'], star: [] },
+  enjoo: { standard: ['ginger', 'zengest'], star: [] },
+  enjooDeViagem: { standard: ['ginger', 'zengest'], star: ['ginger'] }, // ⭐️ Gengibre para enjoo de viagem
+  insonia: { standard: ['fennel', 'zengest'], star: ['fennel'] }, // ⭐️ Erva-doce para insônia
+  cicatriz: { standard: ['fennel', 'ginger'], star: ['ginger'] },
 };
 
 const OilResults = () => {
   const { symptoms } = useSymptoms();
 
-  // Se nenhum sintoma estiver marcado, exibe todos os óleos disponíveis
-  let filteredOils: string[];
+  // Inicializa as variáveis no escopo superior para evitar erro de escopo
+  let filteredOils: Set<string> = new Set();
+  const starTags: Record<string, string[]> = {}; // Associar óleos "star" aos sintomas
 
   if (symptoms.length === 0) {
-    filteredOils = Object.keys(oils);
+    filteredOils = new Set(Object.keys(oils)); // Exibe todos os óleos
   } else {
-    // Obtém a lista de óleos que tratam pelo menos um sintoma selecionado
     const possibleOils = new Set<string>();
+
     symptoms.forEach((symptom) => {
       if (oilRecommendations[symptom]) {
-        oilRecommendations[symptom].forEach((oil) => possibleOils.add(oil));
+        const { standard, star } = oilRecommendations[symptom];
+
+        // Adiciona os óleos "standard"
+        standard.forEach((oil) => possibleOils.add(oil));
+
+        // Adiciona os óleos "star" e associa o sintoma correspondente à tag
+        star.forEach((oil) => {
+          possibleOils.add(oil);
+          if (!starTags[oil]) {
+            starTags[oil] = [];
+          }
+          starTags[oil].push(symptomNames[symptom]); // Usa o nome de exibição correto
+        });
       }
     });
 
-    // Agora filtramos apenas os óleos que cobrem 100% dos sintomas selecionados (exclusividade)
-    filteredOils = [...possibleOils].filter((oilKey) =>
-      symptoms.every((symptom) => oilRecommendations[symptom]?.includes(oilKey))
+    // Filtragem exclusiva: um óleo só aparece se cobrir 100% dos sintomas selecionados
+    filteredOils = new Set(
+      [...possibleOils].filter((oilKey) =>
+        symptoms.every(
+          (symptom) =>
+            oilRecommendations[symptom]?.standard.includes(oilKey) ||
+            oilRecommendations[symptom]?.star.includes(oilKey)
+        )
+      )
     );
   }
 
@@ -65,16 +96,30 @@ const OilResults = () => {
       <h2 className="text-xl font-semibold text-gray-800">
         Óleos Essenciais Recomendados
       </h2>
-      {filteredOils.length > 0 ? (
+      {filteredOils.size > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
-          {filteredOils.map((oilKey) => {
+          {[...filteredOils].map((oilKey) => {
             const oil = oils[oilKey];
 
             return (
               <div
                 key={oilKey}
-                className="flex flex-col items-center p-4 border rounded-lg shadow-sm bg-white"
+                className="relative flex flex-col items-center p-4 border rounded-lg shadow-sm bg-white"
               >
+                {/* Tag de destaque para óleos "star" */}
+                {starTags[oilKey] && starTags[oilKey].length > 0 && (
+                  <div className="absolute -top-2 -right-2 flex flex-col space-y-1">
+                    {starTags[oilKey].map((symptom, index) => (
+                      <div
+                        key={index}
+                        className="bg-yellow-400 text-xs px-2 py-1 rounded-md shadow-md"
+                      >
+                        ⭐️ {symptom}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <Image
                   src={oil.img}
                   alt={oil.displayName}
