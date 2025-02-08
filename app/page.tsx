@@ -1,4 +1,5 @@
 import SymptomBubbles from '@/components/SymptomBubbles';
+import OilResults from '@/components/OilResults';
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         Clique nos sintomas abaixo para adicioná-los ou removê-los.
       </p>
       <SymptomBubbles />
+      <OilResults />
     </main>
   );
 }
