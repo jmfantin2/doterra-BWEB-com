@@ -4,6 +4,7 @@ import './globals.css';
 import Footer from '@/components/Footer';
 import { SymptomsProvider } from '@/contexts/SymptomsContext';
 import { VendorProvider } from '@/contexts/VendorContext';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,17 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <VendorProvider>
-      <SymptomsProvider>
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            {children}
-            <Footer />
-          </body>
-        </html>
-      </SymptomsProvider>
-    </VendorProvider>
+    <Suspense>
+      <VendorProvider>
+        <SymptomsProvider>
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              {children}
+              <Footer />
+            </body>
+          </html>
+        </SymptomsProvider>
+      </VendorProvider>
+    </Suspense>
   );
 }
