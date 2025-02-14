@@ -36,7 +36,7 @@ export const VendorProvider = ({ children }: { children: React.ReactNode }) => {
   const [vendorPhone, setVendorPhone] = useState(defaultVendor.vendorPhone);
 
   const updateVendor = useCallback(() => {
-    const newVendorId = searchParams.get('vendorId');
+    const newVendorId = searchParams.get('c');
     if (newVendorId) {
       const newVendor = vendors[newVendorId];
       if (newVendor) {
