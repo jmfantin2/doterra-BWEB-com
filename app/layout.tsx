@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/Footer';
-import { SymptomsProvider } from '@/contexts/SymptomsContext';
+import { IndicationsProvider } from '@/contexts/IndicationsContext';
 import { VendorProvider } from '@/contexts/VendorContext';
 import { Suspense } from 'react';
 
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <Suspense>
       <VendorProvider>
-        <SymptomsProvider>
+        <IndicationsProvider>
           <html lang="en">
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -38,7 +38,7 @@ export default function RootLayout({
               <Footer />
             </body>
           </html>
-        </SymptomsProvider>
+        </IndicationsProvider>
       </VendorProvider>
     </Suspense>
   );

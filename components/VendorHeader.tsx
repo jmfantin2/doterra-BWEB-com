@@ -14,11 +14,16 @@ const VendorHeader = () => {
           alt={`Foto de ${vendorName}`}
           width={50}
           height={50}
-          className="w-12 h-12 border border-gray-300 shadow-sm"
+          className="w-14 h-14 border border-gray-300 shadow-sm"
         />
         <div>
-          <p className="text-sm text-gray-600">Consultor de Bem-Estar</p>
           <p className="text-lg font-semibold">{vendorName}</p>
+          <p className="text-sm text-gray-600 max-w-[160px] md:max-w-[400px] leading-none">
+            Consultor de Bem-Estar
+            {vendorName === 'João Marcelo' && (
+              <span> e mantenedor do site.</span>
+            )}
+          </p>
           {/*<p className="text-sm text-gray-600">{vendorEmail}</p>*/}
         </div>
       </div>
@@ -30,7 +35,7 @@ const VendorHeader = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image src={whatsappIcon} alt="WhatsApp" width={48} height={48} />
+          <Image src={whatsappIcon} alt="WhatsApp" width={56} height={56} />
         </a>
 
         {/* Botão de Email */}
@@ -38,9 +43,9 @@ const VendorHeader = () => {
           href={`mailto:${vendorEmail}?subject=Quero saber sobre os óleos essenciais`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center bg-blue-500 min-w-[48px] min-h-[48px]"
+          className="flex items-center justify-center bg-blue-500 w-[56px] h-[56px]"
         >
-          <p className="text-3xl">✉️</p>
+          <p className="text-2xl">✉️</p>
         </a>
       </section>
     </nav>
