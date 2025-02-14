@@ -44,8 +44,8 @@ const oilRecommendations: Record<
 > = {
   vertigem: { standard: ['ginger', 'zengest'], star: [] },
   enjoo: { standard: ['ginger', 'zengest'], star: [] },
-  enjooDeViagem: { standard: ['ginger', 'zengest'], star: ['ginger'] }, // ⭐️ Gengibre para enjoo de viagem
-  insonia: { standard: ['fennel', 'zengest'], star: ['fennel'] }, // ⭐️ Erva-doce para insônia
+  enjooDeViagem: { standard: ['ginger', 'zengest'], star: ['ginger'] },
+  insonia: { standard: ['fennel', 'zengest'], star: ['fennel'] },
   cicatriz: { standard: ['fennel', 'ginger'], star: ['ginger'] },
 };
 
